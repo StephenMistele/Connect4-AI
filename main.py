@@ -4,6 +4,7 @@ bounds = (1200,800)
 window = pygame.display.set_mode(bounds)
 block_size = 20
 
+#try insert a puck into a given row
 def insert(grid, col, numrows, player):
     numrows-=1
     successful = True
@@ -26,6 +27,7 @@ def insert(grid, col, numrows, player):
                 break
     return (grid, successful, location)
 
+#given a piece location and 2d array representing pieces, return the appropriate color to display for that piece
 def getColor(grid, col, row):
     if (grid[col][row] == 0):
         return (255,255,255)
@@ -34,11 +36,13 @@ def getColor(grid, col, row):
     if (grid[col][row] == 2):
         return (0,0,255)
 
+#change turn
 def changeTurn(playerTurn):
     if (playerTurn == 1):
         return 2
     return 1
 
+#move column cursor left or right and wrap if needed
 def move(selected, direction):
     if (selected+direction < 0):
         return 6
@@ -46,6 +50,7 @@ def move(selected, direction):
         return 0
     return selected+direction
 
+#check if horizontal win surrounding most recent piece played
 def wonH(offset, location, playerTurn, grid):
     count = 0
     if (location[0] - 3 + offset >= 0 and location[0] + offset <= 6):
@@ -56,6 +61,7 @@ def wonH(offset, location, playerTurn, grid):
         return 1
     return 0
 
+#check if vertical win surrounding most recent piece played
 def wonV(offset, location, playerTurn, grid):
     count = 0
     if (location[1] - 3 + offset >= 0 and location[1] + offset <= 5):
@@ -66,6 +72,7 @@ def wonV(offset, location, playerTurn, grid):
         return 1
     return 0
 
+#check if diagonal decreasing win surrounding most recent piece played
 def wonDiagDecrease(offset, location, playerTurn, grid):
     count = 0
     if (location[1] - 3 + offset >= 0 and location[1] + offset <= 5 and location[0] - 3 + offset >= 0 and location[0] + offset <= 6):
@@ -76,6 +83,7 @@ def wonDiagDecrease(offset, location, playerTurn, grid):
         return 1
     return 0
 
+#check if diagonal increasing win surrounding most recent piece played
 def wonDiagIncrease(offset, location, playerTurn, grid):
     count = 0
     if (location[1] + 3 - offset <= 5 and location[1] - offset >= 0 and location[0] - 3 + offset >= 0 and location[0] + offset <= 6):
@@ -87,6 +95,7 @@ def wonDiagIncrease(offset, location, playerTurn, grid):
         return 1
     return 0
 
+#driver function for checking wins
 def checkIfWon(location, playerTurn, grid):
     won = 0
     for x in range(4):
@@ -96,6 +105,7 @@ def checkIfWon(location, playerTurn, grid):
         won += wonDiagIncrease(x, location, playerTurn, grid)
     return won
 
+#construct board at game start
 selected = 0
 playerTurn = 1
 grid = []
@@ -107,6 +117,7 @@ for x in range(numcolumns):
         column.append(0)
     grid.append(column)
 
+#game loop
 run = True
 while run:
     for event in pygame.event.get():

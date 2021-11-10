@@ -3,6 +3,7 @@ pygame.init()
 bounds = (1200,800)
 window = pygame.display.set_mode(bounds)
 block_size = 20
+font = pygame.font.SysFont('comicsans',60, True)
 
 #try insert a puck into a given row
 def insert(grid, col, numrows, player):
@@ -88,7 +89,6 @@ def wonDiagIncrease(offset, location, playerTurn, grid):
     count = 0
     if (location[1] + 3 - offset <= 5 and location[1] - offset >= 0 and location[0] - 3 + offset >= 0 and location[0] + offset <= 6):
         for x in range(4):
-            print(grid[location[0] - x + offset][location[1] + x - offset], playerTurn)
             if (grid[location[0] - x + offset][location[1] + x - offset] == playerTurn):
                 count += 1
     if (count == 4):
@@ -104,6 +104,17 @@ def checkIfWon(location, playerTurn, grid):
         won += wonDiagDecrease(x, location, playerTurn, grid)
         won += wonDiagIncrease(x, location, playerTurn, grid)
     return won
+
+def drawBoard():
+    window.fill((0,0,0))
+    centerx = 100
+    centery = 100
+    for x in range(numcolumns):
+        for y in range(numrows):
+            pygame.draw.circle(window, getColor(grid, x, y), (centerx, centery), 50)
+            centery += 110
+        centery = 100
+        centerx += 110
 
 #construct board at game start
 selected = 0
@@ -124,17 +135,7 @@ while run:
         if event.type == pygame.QUIT:
             run = False
 
-    window.fill((0,0,0))
-
-    
-    centerx = 100
-    centery = 100
-    for x in range(numcolumns):
-        for y in range(numrows):
-            pygame.draw.circle(window, getColor(grid, x, y), (centerx, centery), 50)
-            centery += 110
-        centery = 100
-        centerx += 110
+    drawBoard()
 
     keys = pygame.key.get_pressed()
     keypressed = False
@@ -149,7 +150,15 @@ while run:
         if (inserted[1]):
             grid = inserted[0]
             if (checkIfWon(inserted[2], playerTurn, grid) > 0):
-                print("DONEDONEDONE", checkIfWon(inserted[2], playerTurn, grid) > 0)
+                drawBoard()
+                if (playerTurn == 1):
+                    text = font.render('Red Wins!', True, (0,255,0))
+                else:
+                    text = font.render('Blue Wins!', True, (0,255,0))
+                window.blit(text, (bounds[0]/2-100, bounds[1]/2-100))
+                pygame.display.update()
+                pygame.time.wait(1000)
+                run = False
             playerTurn = changeTurn(playerTurn)
         keypressed = True
 

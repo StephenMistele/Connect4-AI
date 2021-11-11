@@ -1,5 +1,12 @@
 import pygame
 
+#check to see if user wants to close game
+def checkQuit():
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            return False
+    return True
+
 #try insert a puck into a given row
 def insert(grid, col, player):
     successful = True
@@ -75,3 +82,21 @@ def constructEmptyBoard():
             column.append(0)
         grid.append(column)
     return grid
+
+#displays score at bottom
+def drawScore(font, window, bounds, wins):
+    text = font.render('Red wins:' + str(wins[0]), True, (255,0,0))
+    window.blit(text, (15, bounds[1]-90))
+    text = font.render('Blue wins:' + str(wins[1]), True, (0,0,255))
+    window.blit(text, (bounds[0]-350, bounds[1]-90))
+
+#runs on game win
+def drawWinText(font, bounds, window, wins, playerTurn):
+    if (playerTurn == 1):
+        text = font.render('Red Wins!', True, (0,255,0))
+    else:
+        text = font.render('Blue Wins!', True, (0,255,0))
+    window.blit(text, (bounds[0]/2-140, 10))
+    drawScore(font, window, bounds, wins)
+    pygame.display.update()
+    pygame.time.wait(3000)

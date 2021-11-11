@@ -1,3 +1,5 @@
+#low-key proud of this code. Wrote from scratch, well modularized and dynamic
+
 #driver function for checking wins
 def checkIfWon(location, playerTurn, grid):
     won = 0

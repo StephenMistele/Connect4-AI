@@ -1,3 +1,13 @@
+#driver function for checking wins
+def checkIfWon(location, playerTurn, grid):
+    won = 0
+    for x in range(4):
+        won += wonH(x, location, playerTurn, grid)
+        won += wonV(x, location, playerTurn, grid)
+        won += wonDiagDecrease(x, location, playerTurn, grid)
+        won += wonDiagIncrease(x, location, playerTurn, grid)
+    return won
+
 #check if horizontal win surrounding most recent piece played
 def wonH(offset, location, playerTurn, grid):
     count = 0
@@ -41,13 +51,3 @@ def wonDiagIncrease(offset, location, playerTurn, grid):
     if (count == 4):
         return 1
     return 0
-
-#driver function for checking wins
-def checkIfWon(location, playerTurn, grid):
-    won = 0
-    for x in range(4):
-        won += wonH(x, location, playerTurn, grid)
-        won += wonV(x, location, playerTurn, grid)
-        won += wonDiagDecrease(x, location, playerTurn, grid)
-        won += wonDiagIncrease(x, location, playerTurn, grid)
-    return won

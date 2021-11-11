@@ -13,6 +13,7 @@ def insert(grid, col, player):
         grid[col][5] = player
         successful = True
         location = (col,5)
+    #Regular insert
     else:
         for x in range(5):
             if (grid[col][x+1] != 0):
@@ -23,13 +24,19 @@ def insert(grid, col, player):
     return (grid, successful, location)
 
 #given a piece location and 2d array representing pieces, return the appropriate color to display for that piece
-def getColor(grid, col, row):
+def getColorPiece(grid, col, row):
     if (grid[col][row] == 0):
         return (255,255,255)
     if (grid[col][row] == 1):
         return (255,0,0)
     if (grid[col][row] == 2):
         return (0,0,255)
+
+#get color of current player turn
+def getColorSlider(playerTurn):
+    if (playerTurn == 1):
+        return (255,0,0)
+    return (0,0,225)
 
 #change turn
 def changeTurn(playerTurn):
@@ -45,13 +52,26 @@ def move(selected, direction):
         return 0
     return selected+direction
 
-def drawBoard(window, grid):
+#draws the board. This includes the game board and the cursor piece
+def drawBoard(window, grid, selected, playerTurn, won):
+    #draw pieces
     window.fill((0,0,0))
     centerx = 100
-    centery = 100
     for x in range(7):
+        centery = 170
         for y in range(6):
-            pygame.draw.circle(window, getColor(grid, x, y), (centerx, centery), 50)
+            pygame.draw.circle(window, getColorPiece(grid, x, y), (centerx, centery), 50)
             centery += 110
-        centery = 100
+        if (selected == x and not won):
+            pygame.draw.circle(window, getColorSlider(playerTurn), (centerx, 60), 50)
         centerx += 110
+    
+#returns an empty playing board
+def constructEmptyBoard():
+    grid=[]
+    for x in range(7):
+        column=[]
+        for y in range(6):
+            column.append(0)
+        grid.append(column)
+    return grid

@@ -27,11 +27,11 @@ while run:
         selected = move(selected, 1)
         keypressed = True
     elif keys[pygame.K_RETURN]:
-        inserted = insert(grid, selected, playerTurn)
+        insertInfoTouple = insert(grid, selected, playerTurn)
         keypressed = True
-        if (inserted[1]):
-            grid = inserted[0]
-            if (checkIfWon(inserted[2], playerTurn, grid) > 0):
+        if (insertInfoTouple[0]):
+            grid = insertInfoTouple[1]
+            if (checkIfWon(insertInfoTouple[2], playerTurn, grid) > 0):
                 drawBoard(window, grid, selected, playerTurn, True)
                 drawWinText(font, bounds, window, wins, playerTurn)
                 grid = constructEmptyBoard()

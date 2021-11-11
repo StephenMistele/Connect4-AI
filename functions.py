@@ -28,7 +28,7 @@ def insert(grid, col, player):
                 successful = True
                 location = (col,x)
                 break
-    return (grid, successful, location)
+    return (successful, grid, location)
 
 #given a piece location and 2d array representing pieces, return the appropriate color to display for that piece
 def getColorPiece(grid, col, row):
